@@ -117,22 +117,7 @@ const getSchedule = (data) => {
   });
   return result;
 };
-const getTodaySchedule = (data) => {
-  const schedule = getSchedule(data);
-  return schedule.filter((e) =>
-    isToday(parse(e.date, "dd/MM/yyyy", new Date()))
-  );
-};
-const getTomorrowSchedule = (data) => {
-  const schedule = getSchedule(data);
-  return schedule.filter((e) =>
-    isTomorrow(parse(e.date, "dd/MM/yyyy", new Date()))
-  );
-};
 module.exports = {
-  getTodaySchedule,
-  getTomorrowSchedule,
-  getDatesList,
   getSchedule,
   Lesson,
 };
