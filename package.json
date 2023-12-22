@@ -1,0 +1,14 @@
+{
+  "name": "solace_capella",
+  "version": "1.0.0",
+  "description": "capella maid to give personal schedule for ictu's students",
+  "main": "src/index.js",
+  "scripts": {},
+  "author": "trang",
+  "license": "ISC",
+  "dependencies": {
+    "date-fns": "^3.0.5",
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.3.1"
+  }
+}
