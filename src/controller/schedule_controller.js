@@ -1,7 +1,10 @@
 const ScheduleRepo = require("../data/schedule_repo");
 const transformer = require("../model/lesson");
 const { isToday, isTomorrow, parse } = require("date-fns");
-const getSchedule = () => {
+const getSchedule = async () => {
+  const data = await ScheduleRepo.getDataFromAPI();
+  // console.log("get schedule - controller");
+  // console.log(data);
   return transformer.getSchedule(ScheduleRepo.getDataFromAPI());
 };
 const getTodaySchedule = () => {
@@ -10,8 +13,10 @@ const getTodaySchedule = () => {
     isToday(parse(e.date, "dd/MM/yyyy", new Date()))
   );
 };
-const getTomorrowSchedule = (data) => {
-  const schedule = getSchedule(data);
+const getTomorrowSchedule = async () => {
+  const schedule = await getSchedule();
+  // console.log("get tmr schedule - controller");
+  // console.log(schedule);
   return schedule.filter((e) =>
     isTomorrow(parse(e.date, "dd/MM/yyyy", new Date()))
   );
@@ -21,7 +26,7 @@ const messageSchedule = (message) => {
   const data = getSchedule();
   var str = "";
   data.forEach((element) => {
-    console.log(element.toString());
+    //console.log(element.toString());
     str += element.toString();
   });
   message.reply(str);
@@ -31,17 +36,24 @@ const messageTodaySchedule = (message) => {
   const data = getTodaySchedule();
   var str = "";
   data.forEach((element) => {
-    console.log(element.toString());
+    //console.log(element.toString());
     str += element.toString();
   });
   message.reply(str);
 };
 // !c tomorrow
-const messageTomorrowSchedule = (message) => {
-  const data = getTomorrowSchedule();
+const messageTomorrowSchedule = async (message) => {
+  const data = await ScheduleRepo.getDataFromAPI();
+  //console.log("Data1: " + JSON.stringify(data) + "\n");
+  const data2 = transformer.getSchedule(data);
+  //console.log("Data2: " + JSON.stringify(data2));
+  const data3 = data2.filter((e) =>
+    isTomorrow(parse(e.date, "dd/MM/yyyy", new Date()))
+  );
+  //console.log("Data3" + data3);
   var str = "";
-  data.forEach((element) => {
-    console.log(element.toString());
+  data3.forEach((element) => {
+    // console.log(element.toString());
     str += element.toString();
   });
   message.reply(str);

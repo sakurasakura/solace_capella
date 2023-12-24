@@ -13,7 +13,7 @@ client.login(process.env.TOKEN);
 client.on("ready", (c) => {
   console.log(`${c.user.username} is ready`);
 });
-client.on("messageCreate", (message) => {
+client.on("messageCreate", async (message) => {
   switch (message.content) {
     case "!c today":
       ScheduleController.messageTodaySchedule(message);
@@ -22,7 +22,7 @@ client.on("messageCreate", (message) => {
       ScheduleController.messageTimeLine(message);
       break;
     case "!c tomorrow":
-      ScheduleController.messageTomorrowSchedule(message);
+      await ScheduleController.messageTomorrowSchedule(message);
       break;
     default:
       break;

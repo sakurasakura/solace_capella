@@ -98,6 +98,7 @@ const getDatesList = (startDate, endDate, dayOfWeek) => {
 };
 const getSchedule = (data) => {
   const result = [];
+ // console.log(data);
   data.forEach((element) => {
     const className = element.name;
     const teacher = element.teacher;
