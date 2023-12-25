@@ -1,6 +1,15 @@
 const { Client, IntentsBitField: IntentsBitField } = require("discord.js");
 require("dotenv").config();
 const ScheduleController = require("./controller/schedule_controller");
+const AuthController = require("./controller/auth_controller");
+const mongoose = require("mongoose");
+
+const connectDB = require("./config/dbConnection");
+connectDB();
+mongoose.connection.once("open", () => {
+  console.log("Connected to MongoDB.");
+});
+
 const client = new Client({
   intents: [
     IntentsBitField.Flags.Guilds,
@@ -14,7 +23,9 @@ client.on("ready", (c) => {
   console.log(`${c.user.username} is ready`);
 });
 client.on("messageCreate", async (message) => {
-  switch (message.content) {
+  var str = message.content;
+  console.log(str);
+  switch (str) {
     case "!c today":
       ScheduleController.messageTodaySchedule(message);
       break;
@@ -22,9 +33,29 @@ client.on("messageCreate", async (message) => {
       ScheduleController.messageTimeLine(message);
       break;
     case "!c tomorrow":
-      await ScheduleController.messageTomorrowSchedule(message);
+      console.log(message.author.username);
+      await ScheduleController.messageTomorrowSchedule(
+        message.author.username,
+        message
+      );
       break;
     default:
       break;
+  }
+  if (str.includes("!c sign in")) {
+    const input = str.split(" ");
+    console.log(input);
+    try {
+      const msv = input[3];
+      const password = input[4];
+      const user = message.author.username;
+      // console.log("Username:", user.username);
+      // console.log("msv:", msv);
+      // console.log("Password:", password);
+      await AuthController.signIn(user, msv, password, message);
+    } catch (error) {
+      message.reply("Sai format!");
+      console.log(error);
+    }
   }
 });

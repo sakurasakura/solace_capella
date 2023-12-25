@@ -42,8 +42,8 @@ const messageTodaySchedule = (message) => {
   message.reply(str);
 };
 // !c tomorrow
-const messageTomorrowSchedule = async (message) => {
-  const data = await ScheduleRepo.getDataFromAPI();
+const messageTomorrowSchedule = async (user, message) => {
+  const data = await ScheduleRepo.getDataFromAPI(user, message);
   //console.log("Data1: " + JSON.stringify(data) + "\n");
   const data2 = transformer.getSchedule(data);
   //console.log("Data2: " + JSON.stringify(data2));

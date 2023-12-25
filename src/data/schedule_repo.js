@@ -1,9 +1,7 @@
 const axios = require("axios");
-const getDataFromAPI = async () => {
-  var jsonLoginBody = {
-    username: "dtc2054801030148",
-    password: "30/01/2002",
-  };
+const AuthController = require("../controller/auth_controller");
+const getDataFromAPI = async (user, message) => {
+  var jsonLoginBody = await AuthController.getAccountInfo(user, message);
   const urlLogin = "https://dangkitinchi-ictu.vercel.app/api/login";
   const urlSchedule = "https://dangkitinchi-ictu.vercel.app/api/schedule";
   try {
