@@ -1,4 +1,4 @@
-const Account = require("../model/account");
+const Account = require("../data/model/account");
 const signIn = async (user, msv, pw, message) => {
   if (msv && pw) {
     const foundUser = await Account.findOne({ user: user }).exec();

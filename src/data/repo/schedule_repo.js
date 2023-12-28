@@ -1,39 +1,44 @@
-const {
-  eachDayOfInterval,
-  isMonday,
-  isTuesday,
-  isWednesday,
-  isThursday,
-  isFriday,
-  isSaturday,
-  isSunday,
-  isToday,
-  isTomorrow,
-  parse,
-  format,
-} = require("date-fns");
-class Lesson {
-  constructor(id, className, teacher, room, date, periods) {
-    this.id = id;
-    this.className = className;
-    this.teacher = extractStringBeforePattern(teacher);
-    this.room = room;
-    this.date = date;
-    this.periods = periods.map((str) => parseInt(str, 10));
-  }
+const getDataFromAPI = require("../provider/schedule_provider");
+const { isToday, isTomorrow, parse } = require("date-fns");
 
-  toString() {
-    const formattedString = this.periods.join(", ");
-    return `🐍\nMôn: ${this.className}\nGiảng viên: ${this.teacher}\nPhòng: ${this.room}\nTiết: ${formattedString}\n`;
-  }
-}
-//get teacher's name
-const extractStringBeforePattern = (str) => {
-  const index = str.indexOf("( Mã Meet: ");
-  if (index !== -1) {
-    return str.substring(0, index - 1);
-  }
-  return str;
+const getAllSchedule = async (user, message) => {
+  data = await getDataFromAPI(user, message);
+  console.log("data in getAll");
+  console.log(data);
+  const result = [];
+  // console.log(data);
+  data.forEach((element) => {
+    const className = element.name;
+    const teacher = element.teacher;
+    element.time.forEach((time) => {
+      //get dates in time interval
+      const datesList = getDatesList(
+        time.startTime,
+        time.endTime,
+        time.dayOfWeek
+      );
+      datesList.forEach((date) => {
+        result.push(
+          new Lesson(null, className, teacher, time.room, date, time.period)
+        );
+      });
+    });
+  });
+  return result;
+};
+const getTodaySchedule = async () => {};
+const getTomorrowSchedule = async (user, message) => {
+  const data = await getAllSchedule(user, message);
+  console.log("in get");
+  console.log(data);
+  const filteredData = data.filter((e) =>
+    isTomorrow(parse(e.date, "dd/MM/yyyy", new Date()))
+  );
+  var str = "";
+  filteredData.forEach((element) => {
+    str += element.toString();
+  });
+  return filteredData;
 };
 //get a list of days in week of interval
 const getDatesList = (startDate, endDate, dayOfWeek) => {
@@ -96,29 +101,4 @@ const getDatesList = (startDate, endDate, dayOfWeek) => {
       break;
   }
 };
-const getSchedule = (data) => {
-  const result = [];
- // console.log(data);
-  data.forEach((element) => {
-    const className = element.name;
-    const teacher = element.teacher;
-    element.time.forEach((time) => {
-      //get dates in time interval
-      const datesList = getDatesList(
-        time.startTime,
-        time.endTime,
-        time.dayOfWeek
-      );
-      datesList.forEach((date) => {
-        result.push(
-          new Lesson(null, className, teacher, time.room, date, time.period)
-        );
-      });
-    });
-  });
-  return result;
-};
-module.exports = {
-  getSchedule,
-  Lesson,
-};
+module.exports = { getAllSchedule, getTomorrowSchedule };

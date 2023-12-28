@@ -1,5 +1,5 @@
-const ScheduleRepo = require("../data/schedule_repo");
-const transformer = require("../model/lesson");
+const ScheduleRepo = require("../data/repo/schedule_repo");
+const transformer = require("../data/model/lesson");
 const { isToday, isTomorrow, parse } = require("date-fns");
 const getSchedule = async () => {
   const data = await ScheduleRepo.getDataFromAPI();
@@ -43,21 +43,21 @@ const messageTodaySchedule = (message) => {
 };
 // !c tomorrow
 const messageTomorrowSchedule = async (user, message) => {
-  const data = await ScheduleRepo.getDataFromAPI(user, message);
-  //console.log("Data1: " + JSON.stringify(data) + "\n");
-  const data2 = transformer.getSchedule(data);
-  //console.log("Data2: " + JSON.stringify(data2));
-  const data3 = data2.filter((e) =>
-    isTomorrow(parse(e.date, "dd/MM/yyyy", new Date()))
-  );
-  //console.log("Data3" + data3);
+  const data = await ScheduleRepo.getTomorrowSchedule(user, message);
+  console.log("in message");
+  console.log(data);
+  if (!data) {
+    message.reply("Ngày mai lịch trống!");
+    return;
+  }
   var str = "";
-  data3.forEach((element) => {
-    // console.log(element.toString());
+  data.forEach((element) => {
     str += element.toString();
   });
   message.reply(str);
 };
+// !c this week
+const messageThisWeekSchedule = async (user, message) => {};
 // !c timeline
 const messageTimeLine = (message) => {
   message.reply(

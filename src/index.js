@@ -33,12 +33,15 @@ client.on("messageCreate", async (message) => {
       ScheduleController.messageTimeLine(message);
       break;
     case "!c tomorrow":
-      console.log(message.author.username);
+      //console.log(message.author.username);
       await ScheduleController.messageTomorrowSchedule(
         message.author.username,
         message
       );
       break;
+      case "!c this week":
+        
+        break;
     default:
       break;
   }
