@@ -16,10 +16,7 @@ const messageSchedule = (user, message) => {
 const messageTodaySchedule = async (user, message) => {
   const msg = await message.reply("Chờ mình tí nhé...");
   const data = await ScheduleRepo.getTodaySchedule(user, message);
-  //console.log("in message");
-  // console.log(data);
   if (!data || data.length === 0) {
-    //message.reply("Hôm nay lịch trống!");
     msg.edit("Hôm nay lịch trống!");
     return;
   }
@@ -27,28 +24,27 @@ const messageTodaySchedule = async (user, message) => {
   data.forEach((element) => {
     str += element.toString();
   });
-  //message.reply(str);
   msg.edit(str);
 };
 // !c tomorrow
 const messageTomorrowSchedule = async (user, message) => {
+  const msg = await message.reply("Chờ mình tí nhé...");
   const data = await ScheduleRepo.getTomorrowSchedule(user, message);
-  // console.log("in message");
-  // console.log(data);
   if (!data || data.length === 0) {
-    message.reply("Ngày mai lịch trống!");
+    msg.edit("Ngày mai lịch trống!");
     return;
   }
   var str = "";
   data.forEach((element) => {
     str += element.toString();
   });
-  message.reply(str);
+  msg.edit(str);
 };
 // !c this week
 const messageThisWeekSchedule = async (user, message) => {
+  const msg = await message.reply("Chờ mình tí nhé...");
   const str = await ScheduleRepo.getThisWeekSchedule(user, message);
-  message.reply(str);
+  msg.edit(str);
 };
 // !c timeline
 const messageTimeLine = (message) => {

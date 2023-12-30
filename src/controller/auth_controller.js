@@ -1,10 +1,11 @@
 const Account = require("../data/model/account");
 const signIn = async (user, msv, pw, message) => {
+  const msg = await message.reply("Đang log in...");
   if (msv && pw) {
     const foundUser = await Account.findOne({ user: user }).exec();
     if (foundUser) {
       //du lieu truy cap nhanh da duoc luu
-      message.reply("Login thành công.");
+      msg.edit("Login thành công.");
     } else {
       //du lieu truy cap nhanh chua duoc luu, thuc hien add
       const result = await Account.create({
@@ -14,7 +15,7 @@ const signIn = async (user, msv, pw, message) => {
       });
       console.log(result);
       if (result) {
-        message.reply("Login thành công.");
+        msg.edit("Login thành công.");
       }
     }
   }
