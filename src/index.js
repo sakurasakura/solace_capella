@@ -9,7 +9,13 @@ connectDB();
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB.");
 });
-
+var http = require("http");
+http
+  .createServer(function (req, res) {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("Hello World\n");
+  })
+  .listen(1000, "0.0.0.0");
 const client = new Client({
   intents: [
     IntentsBitField.Flags.Guilds,
@@ -24,7 +30,7 @@ client.on("ready", (c) => {
 });
 client.on("messageCreate", async (message) => {
   var str = message.content;
- // console.log(str);
+  // console.log(str);
   switch (str) {
     case "!c today":
       ScheduleController.messageTodaySchedule(message.author.username, message);
@@ -50,7 +56,7 @@ client.on("messageCreate", async (message) => {
   }
   if (str.includes("!c sign in")) {
     const input = str.split(" ");
-   // console.log(input);
+    // console.log(input);
     try {
       const msv = input[3];
       const password = input[4];
