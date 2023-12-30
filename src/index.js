@@ -24,7 +24,7 @@ client.on("ready", (c) => {
 });
 client.on("messageCreate", async (message) => {
   var str = message.content;
-  console.log(str);
+ // console.log(str);
   switch (str) {
     case "!c today":
       ScheduleController.messageTodaySchedule(message.author.username, message);
@@ -50,7 +50,7 @@ client.on("messageCreate", async (message) => {
   }
   if (str.includes("!c sign in")) {
     const input = str.split(" ");
-    console.log(input);
+   // console.log(input);
     try {
       const msv = input[3];
       const password = input[4];

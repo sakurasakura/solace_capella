@@ -22,7 +22,7 @@ const signIn = async (user, msv, pw, message) => {
 const getAccountInfo = async (user, message) => {
   const foundUser = await Account.findOne({ user: user }).exec();
   if (foundUser) {
-    console.log(foundUser);
+    //console.log(foundUser);
     return {
       username: foundUser.msv,
       password: foundUser.password,

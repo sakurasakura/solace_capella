@@ -15,8 +15,8 @@ const messageSchedule = (user, message) => {
 // !c today
 const messageTodaySchedule = async (user, message) => {
   const data = await ScheduleRepo.getTodaySchedule(user, message);
-  console.log("in message");
-  console.log(data);
+  //console.log("in message");
+ // console.log(data);
   if (!data || data.length === 0) {
     message.reply("Hôm nay lịch trống!");
     return;
@@ -30,8 +30,8 @@ const messageTodaySchedule = async (user, message) => {
 // !c tomorrow
 const messageTomorrowSchedule = async (user, message) => {
   const data = await ScheduleRepo.getTomorrowSchedule(user, message);
-  console.log("in message");
-  console.log(data);
+ // console.log("in message");
+ // console.log(data);
   if (!data || data.length === 0) {
     message.reply("Ngày mai lịch trống!");
     return;

@@ -108,8 +108,8 @@ const getSpecificDayScheduleFromData = (data, date) => {
   const filteredData = data.filter((e) =>
     isSameDay(parse(e.date, "dd/MM/yyyy", new Date()), date)
   );
-  console.log(filteredData);
-  if (!filteredData || filteredData.length===0) {
+  // console.log(filteredData);
+  if (!filteredData || filteredData.length === 0) {
     return "";
   }
   var str = `⭐ ${getDayOfWeekString(date)}\n`;
