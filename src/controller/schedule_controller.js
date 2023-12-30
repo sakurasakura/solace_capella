@@ -1,42 +1,28 @@
 const ScheduleRepo = require("../data/repo/schedule_repo");
-const transformer = require("../data/model/lesson");
-const { isToday, isTomorrow, parse } = require("date-fns");
-const getSchedule = async () => {
-  const data = await ScheduleRepo.getDataFromAPI();
-  // console.log("get schedule - controller");
-  // console.log(data);
-  return transformer.getSchedule(ScheduleRepo.getDataFromAPI());
-};
-const getTodaySchedule = () => {
-  const schedule = getSchedule();
-  return schedule.filter((e) =>
-    isToday(parse(e.date, "dd/MM/yyyy", new Date()))
-  );
-};
-const getTomorrowSchedule = async () => {
-  const schedule = await getSchedule();
-  // console.log("get tmr schedule - controller");
-  // console.log(schedule);
-  return schedule.filter((e) =>
-    isTomorrow(parse(e.date, "dd/MM/yyyy", new Date()))
-  );
-};
 //reply message
-const messageSchedule = (message) => {
-  const data = getSchedule();
+const messageSchedule = (user, message) => {
+  const data = ScheduleRepo.getTodaySchedule(user, message);
+  if (!data || data.length === 0) {
+    message.reply("Bạn không có lịch học!");
+    return;
+  }
   var str = "";
   data.forEach((element) => {
-    //console.log(element.toString());
     str += element.toString();
   });
   message.reply(str);
 };
 // !c today
-const messageTodaySchedule = (message) => {
-  const data = getTodaySchedule();
+const messageTodaySchedule = async (user, message) => {
+  const data = await ScheduleRepo.getTodaySchedule(user, message);
+  console.log("in message");
+  console.log(data);
+  if (!data || data.length === 0) {
+    message.reply("Hôm nay lịch trống!");
+    return;
+  }
   var str = "";
   data.forEach((element) => {
-    //console.log(element.toString());
     str += element.toString();
   });
   message.reply(str);
@@ -46,7 +32,7 @@ const messageTomorrowSchedule = async (user, message) => {
   const data = await ScheduleRepo.getTomorrowSchedule(user, message);
   console.log("in message");
   console.log(data);
-  if (!data) {
+  if (!data || data.length === 0) {
     message.reply("Ngày mai lịch trống!");
     return;
   }
@@ -57,7 +43,10 @@ const messageTomorrowSchedule = async (user, message) => {
   message.reply(str);
 };
 // !c this week
-const messageThisWeekSchedule = async (user, message) => {};
+const messageThisWeekSchedule = async (user, message) => {
+  const str = await ScheduleRepo.getThisWeekSchedule(user, message);
+  message.reply(str);
+};
 // !c timeline
 const messageTimeLine = (message) => {
   message.reply(
@@ -69,4 +58,5 @@ module.exports = {
   messageTimeLine,
   messageTodaySchedule,
   messageTomorrowSchedule,
+  messageThisWeekSchedule,
 };

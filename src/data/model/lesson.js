@@ -1,15 +1,3 @@
-const {
-  eachDayOfInterval,
-  isMonday,
-  isTuesday,
-  isWednesday,
-  isThursday,
-  isFriday,
-  isSaturday,
-  isSunday,
-  parse,
-  format,
-} = require("date-fns");
 class Lesson {
   constructor(id, className, teacher, room, date, periods) {
     this.id = id;
@@ -22,17 +10,15 @@ class Lesson {
 
   toString() {
     const formattedString = this.periods.join(", ");
-    return `🐍\nMôn: ${this.className}\nGiảng viên: ${this.teacher}\nPhòng: ${this.room}\nTiết: ${formattedString}\n`;
+    return `\nMôn: ${this.className}\nGiảng viên: ${this.teacher}\nPhòng: ${this.room}\nTiết: ${formattedString}\n\n`;
   }
   //get teacher's name
-  static extractStringBeforePattern(str){
+  static extractStringBeforePattern(str) {
     const index = str.indexOf("( Mã Meet: ");
     if (index !== -1) {
       return str.substring(0, index - 1);
     }
     return str;
-  };
+  }
 }
-module.exports = {
-  Lesson,
-};
+module.exports = Lesson;

@@ -16,7 +16,7 @@ const getDataFromAPI = async (user, message) => {
         Cookie: cookies,
       },
     });
-    console.log(res2.data["data"]);
+    //console.log(res2.data["data"]);
     return res2.data["data"];
   } catch (error) {
     console.error("Error: ", error);

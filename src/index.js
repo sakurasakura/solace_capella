@@ -27,7 +27,7 @@ client.on("messageCreate", async (message) => {
   console.log(str);
   switch (str) {
     case "!c today":
-      ScheduleController.messageTodaySchedule(message);
+      ScheduleController.messageTodaySchedule(message.author.username, message);
       break;
     case "!c timeline":
       ScheduleController.messageTimeLine(message);
@@ -39,9 +39,12 @@ client.on("messageCreate", async (message) => {
         message
       );
       break;
-      case "!c this week":
-        
-        break;
+    case "!c this week":
+      await ScheduleController.messageThisWeekSchedule(
+        message.author.username,
+        message
+      );
+      break;
     default:
       break;
   }
