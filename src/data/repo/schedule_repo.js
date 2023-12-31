@@ -16,6 +16,8 @@ const {
   startOfWeek,
   lastDayOfWeek,
   getDay,
+  nextMonday,
+  nextSunday,
 } = require("date-fns");
 const Lesson = require("../model/lesson");
 const getAllSchedule = async (user, message) => {
@@ -78,15 +80,28 @@ const getThisWeekSchedule = async (user, message) => {
     start: startDate,
     end: lastDate,
   });
-  // console.log(startDate);
-  // console.log(lastDate);
-  // console.log(dateList);
-
   dateList.forEach((date) => {
     result += getSpecificDayScheduleFromData(data, date);
   });
   if (result.length === 0) {
     return "Không có lịch học trong tuần này";
+  }
+  return result;
+};
+const getNextWeekSchedule = async (user, message) => {
+  var result = "";
+  const data = await getAllSchedule(user, message);
+  const startDate = nextMonday(new Date());
+  const lastDate = nextSunday(new Date());
+  const dateList = eachDayOfInterval({
+    start: startDate,
+    end: lastDate,
+  });
+  dateList.forEach((date) => {
+    result += getSpecificDayScheduleFromData(data, date);
+  });
+  if (result.length === 0) {
+    return "Không có lịch học trong tuần sau";
   }
   return result;
 };
@@ -205,4 +220,5 @@ module.exports = {
   getTomorrowSchedule,
   getTodaySchedule,
   getThisWeekSchedule,
+  getNextWeekSchedule,
 };

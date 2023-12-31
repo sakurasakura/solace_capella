@@ -51,6 +51,12 @@ client.on("messageCreate", async (message) => {
         message
       );
       break;
+    case "!c next week":
+      await ScheduleController.messageNextWeekSchedule(
+        message.author.username,
+        message
+      );
+      break;
     default:
       break;
   }
@@ -71,4 +77,3 @@ client.on("messageCreate", async (message) => {
     }
   }
 });
-
