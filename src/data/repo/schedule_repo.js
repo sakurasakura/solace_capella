@@ -84,7 +84,8 @@ const getNextWeekSchedule = async (user, message) => {
   var result = "Lịch học tuần sau:\n";
   const data = await getAllSchedule(user, message);
   const startDate = nextMonday(new Date());
-  const lastDate = nextSunday(new Date());
+  const lastDate = nextSunday(nextMonday);
+
   const dateList = eachDayOfInterval({
     start: startDate,
     end: lastDate,
