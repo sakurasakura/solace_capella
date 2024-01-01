@@ -22,15 +22,11 @@ const {
 const Lesson = require("../model/lesson");
 const getAllSchedule = async (user, message) => {
   data = await getDataFromAPI(user, message);
-  // console.log("data in getAll");
-  // console.log(data);
   const result = [];
-  // console.log(data);
   data.forEach((element) => {
     const className = element.name;
     const teacher = element.teacher;
     element.time.forEach((time) => {
-      //get dates in time interval
       const datesList = getDatesList(
         time.startTime,
         time.endTime,
@@ -47,8 +43,6 @@ const getAllSchedule = async (user, message) => {
 };
 const getTodaySchedule = async (user, message) => {
   const data = await getAllSchedule(user, message);
-  // console.log("in get");
-  // console.log(data);
   const filteredData = data.filter((e) =>
     isToday(parse(e.date, "dd/MM/yyyy", new Date()))
   );
@@ -60,8 +54,6 @@ const getTodaySchedule = async (user, message) => {
 };
 const getTomorrowSchedule = async (user, message) => {
   const data = await getAllSchedule(user, message);
-  // console.log("in get");
-  // console.log(data);
   const filteredData = data.filter((e) =>
     isTomorrow(parse(e.date, "dd/MM/yyyy", new Date()))
   );
@@ -72,7 +64,7 @@ const getTomorrowSchedule = async (user, message) => {
   return filteredData;
 };
 const getThisWeekSchedule = async (user, message) => {
-  var result = "";
+  var result = "Lịch học tuần này:\n";
   const data = await getAllSchedule(user, message);
   const startDate = startOfWeek(new Date(), { weekStartsOn: 1 });
   const lastDate = lastDayOfWeek(startDate, { weekStartsOn: 1 });
@@ -89,7 +81,7 @@ const getThisWeekSchedule = async (user, message) => {
   return result;
 };
 const getNextWeekSchedule = async (user, message) => {
-  var result = "";
+  var result = "Lịch học tuần sau:\n";
   const data = await getAllSchedule(user, message);
   const startDate = nextMonday(new Date());
   const lastDate = nextSunday(new Date());
@@ -123,7 +115,6 @@ const getSpecificDayScheduleFromData = (data, date) => {
   const filteredData = data.filter((e) =>
     isSameDay(parse(e.date, "dd/MM/yyyy", new Date()), date)
   );
-  // console.log(filteredData);
   if (!filteredData || filteredData.length === 0) {
     return "";
   }
@@ -154,7 +145,6 @@ const getDayOfWeekString = (date) => {
       break;
   }
 };
-//get a list of days in week of interval
 const getDatesList = (startDate, endDate, dayOfWeek) => {
   const result = [];
   const dayList = eachDayOfInterval({

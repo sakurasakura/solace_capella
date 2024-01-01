@@ -12,7 +12,6 @@ class Lesson {
     const formattedString = this.periods.join(", ");
     return `\nMôn: ${this.className}\nGiảng viên: ${this.teacher}\nPhòng: ${this.room}\nTiết: ${formattedString}\n\n`;
   }
-  //get teacher's name
   static extractStringBeforePattern(str) {
     const index = str.indexOf("( Mã Meet: ");
     if (index !== -1) {

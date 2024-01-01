@@ -4,10 +4,8 @@ const signIn = async (user, msv, pw, message) => {
   if (msv && pw) {
     const foundUser = await Account.findOne({ user: user }).exec();
     if (foundUser) {
-      //du lieu truy cap nhanh da duoc luu
-      msg.edit("Login thành công.");
+      msg.edit("Login thành công rồi nha.");
     } else {
-      //du lieu truy cap nhanh chua duoc luu, thuc hien add
       const result = await Account.create({
         user: user,
         msv: msv,
@@ -15,21 +13,38 @@ const signIn = async (user, msv, pw, message) => {
       });
       console.log(result);
       if (result) {
-        msg.edit("Login thành công.");
+        msg.edit("Login thành công rôi nha.");
       }
+    }
+  }
+};
+const signOut = async (user, message) => {
+  const msg = await message.reply("Đang log out nè. Chờ tí nha...");
+  const foundUser = await Account.findOne({ user: user }).exec();
+  if (!foundUser) {
+    msg.edit("Cậu chưa log in mà.");
+  } else {
+    const result = Account.deleteOne({ user: user }).exec();
+    if (!result) {
+      msg.edit("Có lỗi rồi. Hãy liên lạc với chủ bot nha.");
+    } else {
+      msg.edit(
+        "Cậu đã log out thành công rồi đó.\nNếu muốn tiếp tục sử dụng tớ thì login lại nha."
+      );
     }
   }
 };
 const getAccountInfo = async (user, message) => {
   const foundUser = await Account.findOne({ user: user }).exec();
   if (foundUser) {
-    //console.log(foundUser);
     return {
       username: foundUser.msv,
       password: foundUser.password,
     };
   } else {
-    message.reply("Dữ liệu chưa có. Hãy log in trước");
+    message.reply(
+      "Tớ không thể lấy dữ liệu từ server nếu cậu không login trước.\nNếu không biết lệnh login như thế nào thì gõ !c help nha."
+    );
   }
 };
-module.exports = { signIn, getAccountInfo };
+module.exports = { signIn, getAccountInfo, signOut };

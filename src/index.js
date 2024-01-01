@@ -30,7 +30,6 @@ client.on("ready", (c) => {
 });
 client.on("messageCreate", async (message) => {
   var str = message.content;
-  // console.log(str);
   switch (str) {
     case "!c today":
       ScheduleController.messageTodaySchedule(message.author.username, message);
@@ -39,7 +38,6 @@ client.on("messageCreate", async (message) => {
       ScheduleController.messageTimeLine(message);
       break;
     case "!c tomorrow":
-      //console.log(message.author.username);
       await ScheduleController.messageTomorrowSchedule(
         message.author.username,
         message
@@ -57,19 +55,18 @@ client.on("messageCreate", async (message) => {
         message
       );
       break;
+    case "!c sign out":
+      await AuthController.signOut(message.author.username, message);
+      break;
     default:
       break;
   }
   if (str.includes("!c sign in")) {
     const input = str.split(" ");
-    // console.log(input);
     try {
       const msv = input[3];
       const password = input[4];
       const user = message.author.username;
-      // console.log("Username:", user.username);
-      // console.log("msv:", msv);
-      // console.log("Password:", password);
       await AuthController.signIn(user, msv, password, message);
     } catch (error) {
       message.reply("Sai format!");
