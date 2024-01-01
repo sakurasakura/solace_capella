@@ -2,6 +2,8 @@ const { Client, IntentsBitField: IntentsBitField } = require("discord.js");
 require("dotenv").config();
 const ScheduleController = require("./controller/schedule_controller");
 const AuthController = require("./controller/auth_controller");
+const ChoresController = require("./controller/chores_controller");
+
 const mongoose = require("mongoose");
 
 const connectDB = require("./config/dbConnection");
@@ -31,6 +33,9 @@ client.on("ready", (c) => {
 client.on("messageCreate", async (message) => {
   var str = message.content;
   switch (str) {
+    case "!c help":
+      ChoresController.messageHelper(message);
+      break;
     case "!c today":
       ScheduleController.messageTodaySchedule(message.author.username, message);
       break;
@@ -62,15 +67,9 @@ client.on("messageCreate", async (message) => {
       break;
   }
   if (str.includes("!c sign in")) {
-    const input = str.split(" ");
-    try {
-      const msv = input[3];
-      const password = input[4];
-      const user = message.author.username;
-      await AuthController.signIn(user, msv, password, message);
-    } catch (error) {
-      message.reply("Sai format!");
-      console.log(error);
-    }
+    await AuthController.signIn(message,str);
+  }
+  if (str.includes("!c random")) {
+    ChoresController.messageRandom(message,str);
   }
 });

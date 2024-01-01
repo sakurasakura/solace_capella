@@ -1,6 +1,18 @@
 const Account = require("../data/model/account");
-const signIn = async (user, msv, pw, message) => {
+const signIn = async (message, content) => {
   const msg = await message.reply("Đang log in...");
+  var user, msv, pw;
+  const input = content.split(" ");
+  try {
+    msv = input[3];
+    password = input[4];
+    user = message.author.username;
+    await AuthController.signIn(user, msv, password, message);
+  } catch (error) {
+    message.reply("Cậu nhập sai format rồi!");
+    console.log(error);
+    return;
+  }
   if (msv && pw) {
     const foundUser = await Account.findOne({ user: user }).exec();
     if (foundUser) {

@@ -5,8 +5,22 @@ This discord bot returns ictu's students 's personal study schedule.
 ## Available commands
 
 ```javascript
-c! login ${your-student-id} ${your password}
-//you have to do this step before everything else
+c! helper
+```
+
+```javascript
+c! random choice 1 or choice 2 or choice 3
+//give you a random result
+```
+
+```javascript
+c! timeline
+//return your school timeline
+```
+
+```javascript
+c! sign in ${your-student-id} ${your password}
+//you have to do this step before below commands
 ```
 
 ```javascript
@@ -22,6 +36,15 @@ c! tomorrow
 ```javascript
 c! this week
 //return your school schedule for current week
+```
+
+```javascript
+c! next week
+//return your school schedule for next week
+```
+
+```javascript
+c! sign out
 ```
 
 ## Related
